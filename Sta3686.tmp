@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq84w8hgtjkau"]
+
+[ext_resource type="PackedScene" uid="uid://c35gwttwtvrvm" path="res://RoadSegment.tscn" id="1_5vax3"]
+[ext_resource type="Script" path="res://RoadSegment.gd" id="2_vble7"]
+[ext_resource type="PackedScene" uid="uid://b1wh4uvjnvnj2" path="res://GameWorld.tscn" id="3_noyek"]
+
+[node name="Start" type="Node2D"]
+
+[node name="GameWorld" parent="." instance=ExtResource("3_noyek")]
+
+[node name="RoadSegment" parent="." instance=ExtResource("1_5vax3")]
+script = ExtResource("2_vble7")

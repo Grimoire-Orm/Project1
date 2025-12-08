@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqhd40ioc80w0"]
+
+[ext_resource type="Script" path="res://RoadManager.gd" id="1_vluaq"]
+[ext_resource type="Script" path="res://NothingEvents.gd" id="2_h0qpe"]
+[ext_resource type="Script" path="res://CombatManager.gd" id="3_fgcp2"]
+[ext_resource type="Script" path="res://LivingBeings.gd" id="4_e2v5r"]
+
+[sub_resource type="Gradient" id="Gradient_8l75a"]
+offsets = PackedFloat32Array(0, 0.96, 1)
+colors = PackedColorArray(0.147672, 0.147672, 0.147672, 1, 0.143325, 0.139055, 0.142186, 0.854902, 0.14, 0.1344, 0.1358, 0.478431)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wjy8f"]
+gradient = SubResource("Gradient_8l75a")
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vluaq")
+
+[node name="LeftPanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(423, 786)
+layout_mode = 0
+offset_right = 423.0
+offset_bottom = 786.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="LeftPanel"]
+position = Vector2(212, 92)
+scale = Vector2(6.125, 2.375)
+texture = SubResource("GradientTexture2D_wjy8f")
+
+[node name="EventLabel" type="RichTextLabel" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 400.0
+offset_bottom = 160.0
+autowrap_mode = 1
+
+[node name="btn_move_forward" type="Button" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 744.0
+offset_right = 416.0
+offset_bottom = 776.0
+text = "Вперёд"
+
+[node name="AttackButton" type="Button" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 752.0
+offset_right = 784.0
+offset_bottom = 784.0
+text = "Скрыть"
+
+[node name="AttackList" type="ItemList" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 648.0
+offset_right = 712.0
+offset_bottom = 784.0
+
+[node name="RoadTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 424.0
+offset_right = 1200.0
+offset_bottom = 784.0
+
+[node name="GoblinTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 424.0
+offset_right = 1200.0
+offset_bottom = 784.0
+
+[node name="NothingEvents" type="Node" parent="."]
+script = ExtResource("2_h0qpe")
+
+[node name="CombatManager" type="Node" parent="."]
+script = ExtResource("3_fgcp2")
+
+[node name="LivingBeings" type="Node" parent="."]
+script = ExtResource("4_e2v5r")
