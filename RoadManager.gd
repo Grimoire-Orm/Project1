@@ -22,6 +22,7 @@ func _ready() -> void:
 	btn_move_forward.pressed.connect(_on_move_forward)
 	_update_hp_bar()  # ← Начальное HP
 
+
 func _load_road_textures() -> void:
 	road_textures.clear()
 	for file in DirAccess.get_files_at(roads_folder):
