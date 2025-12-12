@@ -37,7 +37,7 @@ func _setup_texture_rect() -> void:
 func _on_move_forward() -> void:
 	# ВОТ ЭТО НОВОЕ! — БЛОКИРУЕМ ДВИЖЕНИЕ В БОЮ
 	if combat_manager.in_combat:
-		_append_log("Ты не можешь сбежать из боя, как трус!")
+		_append_log("Ты не можешь сбежать из боя как трус!")
 		return
 	
 	_enter_new_room()
