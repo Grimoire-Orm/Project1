@@ -38,6 +38,7 @@ func _ready() -> void:
 	_connect_attack_signals()
 	_sync_overlay_to_road()
 	_hide_attack_ui()
+
 	_update_hp_bar()  # ← Начальное HP
 
 func _connect_attack_signals() -> void:
@@ -105,31 +106,46 @@ func _set_random_goblin_texture(tpl: Dictionary) -> void:
 					goblin_texture.texture = tex
 
 func _on_attack_selected(index: int) -> void:
+	print("DEBUG: Attack selected: ", index)  # ← DEBUG — увидишь, если клик работает
+	
 	if not in_combat or index < 0 or index >= player_attacks.size():
+		print("DEBUG: Invalid attack index")
 		return
 		
 	var attack = player_attacks[index]
 	
-	# Обычный урон (если есть)
+	# Обычный урон
 	if attack.has("min"):
 		var dmg = rng.randi_range(attack["min"], attack["max"])
 		npc_hp -= dmg
 		_append_log("Я попытался сделать %s и нанёс %d урона" % [attack["name"], dmg])
 	
-	# Восстановление HP (хватание за сиськи)
+	# Хватание за сиськи
 	if attack.has("heal"):
 		player_hp = min(player_hp + attack["heal"], MAX_PLAYER_HP)
-		_append_log("Отличные сисьи!" % [npc_name, attack["heal"]])
+		_append_log("Я схватил %s за сиськи и восстановил %d HP!" % [npc_name, attack["heal"]])
 	
-	# Проигрываем видео, если указано
+	# Видео (если есть)
 	if attack.has("video") and attack["video"] and attack_video:
+		print("DEBUG: Playing video ", attack["video"])
 		attack_video.stream = load(attack["video"])
 		attack_video.visible = true
 		attack_video.z_index = 20
 		attack_video.play()
-		await attack_video.finished
-		attack_video.visible = false
+		
+		# ФИКС: Await не блокирует UI — используем call_deferred
+		call_deferred("_wait_for_video_finish")
+		return  # ← Выходим, NPC подождёт
 	
+	# Если нет видео — сразу NPC ход
+	_finish_attack_turn()
+
+func _wait_for_video_finish() -> void:
+	await attack_video.finished
+	attack_video.visible = false
+	_finish_attack_turn()
+
+func _finish_attack_turn() -> void:
 	_update_hp_bar()
 	
 	if npc_hp <= 0:
@@ -137,7 +153,6 @@ func _on_attack_selected(index: int) -> void:
 		_end_combat()
 		return
 	
-	# NPC ходит ТОЛЬКО после видео!
 	_npc_turn()
 
 func _npc_turn() -> void:
@@ -168,8 +183,16 @@ func _reparent_attack_ui(to_overlay: bool) -> void:
 		if attack_list:
 			_attack_list_orig_parent = attack_list.get_parent()
 			_attack_list_orig_pos = attack_list.position
+			
 			attack_list.reparent(goblin_texture)
-			attack_list.position = Vector2(16, goblin_texture.size.y - 220)
+			
+			# ФИКС: Позиция — всегда видимая, отступ 20 от низа
+			var bottom_padding = 20
+			var list_height = attack_list.size.y
+			attack_list.position = Vector2(16, goblin_texture.size.y - list_height - bottom_padding)
+			
+			print("DEBUG: AttackList repositioned to ", attack_list.position)  # ← DEBUG
+			
 	else:
 		if attack_list and _attack_list_orig_parent:
 			attack_list.reparent(_attack_list_orig_parent)
