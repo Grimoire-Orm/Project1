@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqhd40ioc80w0"]
+[gd_scene load_steps=8 format=3 uid="uid://bqhd40ioc80w0"]
 
 [ext_resource type="Script" path="res://RoadManager.gd" id="1_vluaq"]
 [ext_resource type="Script" path="res://NothingEvents.gd" id="2_h0qpe"]
@@ -11,6 +11,9 @@ colors = PackedColorArray(0.147672, 0.147672, 0.147672, 1, 0.143325, 0.139055, 0
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_wjy8f"]
 gradient = SubResource("Gradient_8l75a")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed3gc"]
+bg_color = Color(0.14902, 0.14902, 0.14902, 1)
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -55,6 +58,24 @@ offset_top = 648.0
 offset_right = 712.0
 offset_bottom = 784.0
 scale = Vector2(1.00266, 1.01656)
+
+[node name="HPbar" type="RichTextLabel" parent="LeftPanel"]
+clip_contents = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 208.0
+offset_right = 80.0
+offset_bottom = 232.0
+theme_override_colors/table_border = Color(0.868985, 0.868985, 0.868985, 1)
+theme_override_colors/table_even_row_bg = Color(0.775063, 0.775063, 0.775063, 1)
+theme_override_colors/table_odd_row_bg = Color(0.687215, 0.687215, 0.687215, 1)
+theme_override_colors/default_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_colors/font_selected_color = Color(0.593134, 0.593134, 0.593134, 1)
+theme_override_colors/selection_color = Color(0.633757, 0.633757, 0.633757, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.60933, 0.60933, 0.60933, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_ed3gc")
+text = "45/50"
 
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0
