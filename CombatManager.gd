@@ -9,7 +9,7 @@ extends Node
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
 @onready var event_label: RichTextLabel = root.get_node_or_null(event_label_rel_path)
-@onready var hp_bar: RichTextLabel = left_panel.get_node_or_null("HPBar")  # HPBar!
+@onready var hp_bar: RichTextLabel = left_panel.get_node_or_null("HPBar")
 @onready var goblin_texture: TextureRect = root.get_node_or_null(goblin_texture_name)
 @onready var living_beings: Node = root.get_node_or_null(living_beings_name)
 @onready var attack_list: ItemList = left_panel.get_node_or_null("AttackList")
@@ -17,8 +17,8 @@ extends Node
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var in_combat: bool = false
 
-# ГЛОБАЛЬНОЕ HP (НЕ СБРАСЫВАЕТСЯ!)
-const MAX_PLAYER_HP: int = 30  # ← Изменено на 30!
+# ГЛОБАЛЬНОЕ HP
+const MAX_PLAYER_HP: int = 30
 var player_hp: int = MAX_PLAYER_HP
 
 var npc_hp: int = 0
@@ -31,10 +31,12 @@ var _attack_list_orig_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	rng.randomize()
+	if hp_bar:
+		hp_bar.bbcode_enabled = true  # ← Включаем BBCode один раз
 	_connect_attack_signals()
 	_sync_overlay_to_road()
 	_hide_attack_ui()
-	_update_hp_bar()  # ← Показываем HP в начале
+	_update_hp_bar()  # ← Начальное HP
 
 func _connect_attack_signals() -> void:
 	if attack_list:
@@ -56,7 +58,6 @@ func start_combat(npc_type: String) -> void:
 	]
 	npc_attacks = tpl.get("attacks", default_attacks).duplicate()
 	
-	# НЕ СБРАСЫВАЕМ player_hp!
 	player_attacks = [
 		{"name": "удар с вертушки", "min": 1, "max": 5},
 		{"name": "удар кулаком", "min": 2, "max": 3}
@@ -70,7 +71,7 @@ func start_combat(npc_type: String) -> void:
 	_reparent_attack_ui(true)
 	_populate_attack_list()
 	_show_attack_ui()
-	_update_hp_bar()  # ← Обновляем в начале боя
+	_update_hp_bar()  # ← В начале боя
 	_append_log("На тропе нападает %s!" % npc_name)
 
 func _set_random_goblin_texture(tpl: Dictionary) -> void:
@@ -165,12 +166,13 @@ func _populate_attack_list() -> void:
 	for a in player_attacks:
 		attack_list.add_item(a["name"])
 
-# ФУНКЦИЯ ДЛЯ HPBar — КРАСНЫЙ ТЕКСТ ПО ЦЕНТРУ
+# ФУНКЦИЯ HPBar — КРАСНЫЙ ТЕКСТ ПО ЦЕНТРУ
 func _update_hp_bar() -> void:
 	if not hp_bar:
 		return
 	var hp_text = "[center][color=#ff0000]%d/%d[/color][/center]" % [player_hp, MAX_PLAYER_HP]
 	hp_bar.text = hp_text
+	# BBCode парсится автоматически, если bbcode_enabled = true в инспекторе
 
 func _append_log(text: String) -> void:
 	if not event_label:

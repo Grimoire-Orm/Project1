@@ -59,7 +59,7 @@ offset_right = 712.0
 offset_bottom = 784.0
 scale = Vector2(1.00266, 1.01656)
 
-[node name="HPbar" type="RichTextLabel" parent="LeftPanel"]
+[node name="HPBar" type="RichTextLabel" parent="LeftPanel"]
 clip_contents = false
 layout_mode = 0
 offset_left = 16.0

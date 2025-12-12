@@ -6,7 +6,7 @@ extends Control
 
 @onready var road_texture_rect: TextureRect = $RoadTexture
 @onready var event_label: RichTextLabel = $LeftPanel/EventLabel
-@onready var hp_bar: RichTextLabel = $LeftPanel/HPbar  # HPBar
+@onready var hp_bar: RichTextLabel = $LeftPanel/HPBar  # HPBar
 @onready var btn_move_forward: Button = $LeftPanel/btn_move_forward
 @onready var nothing_events: Node = $NothingEvents
 @onready var combat_manager: Node = $CombatManager
@@ -20,7 +20,7 @@ func _ready() -> void:
 	_setup_texture_rect()
 	_enter_new_room()
 	btn_move_forward.pressed.connect(_on_move_forward)
-	_update_hp_bar()  # ← Показываем HP в начале
+	_update_hp_bar()  # ← Начальное HP
 
 func _load_road_textures() -> void:
 	road_textures.clear()
@@ -55,7 +55,7 @@ func _enter_new_room() -> void:
 	else:
 		event_label.text = nothing_events.get_random_phrase()
 	
-	_update_hp_bar()  # ← Обновляем HPBar после шага
+	_update_hp_bar()  # ← Обновляем после шага
 
 # Функция для HPBar (использует combat_manager.player_hp)
 func _update_hp_bar() -> void:
