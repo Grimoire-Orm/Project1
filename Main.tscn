@@ -48,14 +48,6 @@ offset_right = 416.0
 offset_bottom = 776.0
 text = "Вперёд"
 
-[node name="AttackButton" type="Button" parent="LeftPanel"]
-layout_mode = 0
-offset_left = 712.0
-offset_top = 752.0
-offset_right = 784.0
-offset_bottom = 784.0
-text = "Скрыть"
-
 [node name="AttackList" type="ItemList" parent="LeftPanel"]
 layout_mode = 0
 offset_left = 424.0
