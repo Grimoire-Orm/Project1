@@ -5,7 +5,7 @@ extends Node
 @export var goblin_texture_name: String = "GoblinTexture"
 @export var living_beings_name: String = "LivingBeings"
 @export var goblins_folder: String = "res://goblins"
-@export var grab_tits_video: String = "res://Animations-Battle Animations-Goblins/goblin_boobs_grab.ogv"  # ← проверь точное имя файла!
+@export var grab_tits_video: String = "res://Animations-Battle Animations-Goblins/Goblin Boob Grab.ogv"  # ← проверь точное имя файла!
 
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
