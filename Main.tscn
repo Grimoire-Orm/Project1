@@ -28,8 +28,8 @@ offset_right = 423.0
 offset_bottom = 786.0
 
 [node name="Sprite2D2" type="Sprite2D" parent="LeftPanel"]
-position = Vector2(212, 92)
-scale = Vector2(6.125, 2.375)
+position = Vector2(212, 104)
+scale = Vector2(6.125, 2.75)
 texture = SubResource("GradientTexture2D_wjy8f")
 
 [node name="EventLabel" type="RichTextLabel" parent="LeftPanel"]
@@ -37,7 +37,7 @@ layout_mode = 0
 offset_left = 24.0
 offset_top = 24.0
 offset_right = 400.0
-offset_bottom = 160.0
+offset_bottom = 184.0
 autowrap_mode = 1
 
 [node name="btn_move_forward" type="Button" parent="LeftPanel"]
@@ -54,6 +54,7 @@ offset_left = 424.0
 offset_top = 648.0
 offset_right = 712.0
 offset_bottom = 784.0
+scale = Vector2(1.00266, 1.01656)
 
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0

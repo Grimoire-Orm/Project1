@@ -130,8 +130,13 @@ func _reparent_attack_ui(to_overlay: bool) -> void:
 		if attack_list:
 			_attack_list_orig_parent = attack_list.get_parent()
 			_attack_list_orig_pos = attack_list.position
+			
 			attack_list.reparent(goblin_texture)
-			attack_list.position = Vector2(16, goblin_texture.size.y - 220)
+			
+			# ПРИВЯЗЫВАЕМ К НИЖНЕМУ КРАЮ + отступ 20 пикселей
+			var bottom_padding: int = 20
+			var list_height: int = attack_list.size.y
+			attack_list.position = Vector2(16, goblin_texture.size.y - list_height - bottom_padding)
 	else:
 		if attack_list and _attack_list_orig_parent:
 			attack_list.reparent(_attack_list_orig_parent)
