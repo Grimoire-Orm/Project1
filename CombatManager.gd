@@ -5,6 +5,7 @@ extends Node
 @export var goblin_texture_name: String = "GoblinTexture"
 @export var living_beings_name: String = "LivingBeings"
 @export var goblins_folder: String = "res://goblins"
+@export var grab_tits_video: String = "res://Animations-Battle Animations-Goblins/goblin_boobs_grab.ogv"  # ← проверь точное имя файла!
 
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
@@ -13,6 +14,7 @@ extends Node
 @onready var goblin_texture: TextureRect = root.get_node_or_null(goblin_texture_name)
 @onready var living_beings: Node = root.get_node_or_null(living_beings_name)
 @onready var attack_list: ItemList = left_panel.get_node_or_null("AttackList")
+@onready var attack_video: VideoStreamPlayer = root.get_node_or_null("AttackVideo")  # ← видео анимации
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var in_combat: bool = false
@@ -60,7 +62,8 @@ func start_combat(npc_type: String) -> void:
 	
 	player_attacks = [
 		{"name": "удар с вертушки", "min": 1, "max": 5},
-		{"name": "удар кулаком", "min": 2, "max": 3}
+		{"name": "удар кулаком", "min": 2, "max": 3},
+		{"name": "Схватить за сиськи", "heal": 5, "video": grab_tits_video}
 	]
 	
 	_sync_overlay_to_road()
@@ -104,17 +107,37 @@ func _set_random_goblin_texture(tpl: Dictionary) -> void:
 func _on_attack_selected(index: int) -> void:
 	if not in_combat or index < 0 or index >= player_attacks.size():
 		return
+		
 	var attack = player_attacks[index]
-	var dmg = rng.randi_range(attack["min"], attack["max"])
-	npc_hp -= dmg
-	_append_log("Я попытался сделать %s и нанёс %d урона" % [attack["name"], dmg])
 	
-	_update_hp_bar()  # ← Обновляем после атаки!
+	# Обычный урон (если есть)
+	if attack.has("min"):
+		var dmg = rng.randi_range(attack["min"], attack["max"])
+		npc_hp -= dmg
+		_append_log("Я попытался сделать %s и нанёс %d урона" % [attack["name"], dmg])
+	
+	# Восстановление HP (хватание за сиськи)
+	if attack.has("heal"):
+		player_hp = min(player_hp + attack["heal"], MAX_PLAYER_HP)
+		_append_log("Отличные сисьи!" % [npc_name, attack["heal"]])
+	
+	# Проигрываем видео, если указано
+	if attack.has("video") and attack["video"] and attack_video:
+		attack_video.stream = load(attack["video"])
+		attack_video.visible = true
+		attack_video.z_index = 20
+		attack_video.play()
+		await attack_video.finished
+		attack_video.visible = false
+	
+	_update_hp_bar()
 	
 	if npc_hp <= 0:
 		_append_log("%s повержена!" % npc_name)
 		_end_combat()
 		return
+	
+	# NPC ходит ТОЛЬКО после видео!
 	_npc_turn()
 
 func _npc_turn() -> void:
