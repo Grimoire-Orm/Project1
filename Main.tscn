@@ -91,12 +91,6 @@ script = ExtResource("2_h0qpe")
 
 [node name="CombatManager" type="Node" parent="."]
 script = ExtResource("3_fgcp2")
-left_panel_name = null
-event_label_rel_path = null
-goblin_texture_name = null
-living_beings_name = null
-goblins_folder = null
-grab_tits_video = null
 
 [node name="LivingBeings" type="Node" parent="."]
 script = ExtResource("4_e2v5r")

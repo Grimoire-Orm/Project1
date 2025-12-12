@@ -5,7 +5,7 @@ extends Node
 @export var goblin_texture_name: String = "GoblinTexture"
 @export var living_beings_name: String = "LivingBeings"
 @export var goblins_folder: String = "res://goblins"
-@export var grab_tits_video: String = "res://Animations-BattleAnimations-Goblins/GoblinBoobsGrab.mp4"
+@export var grab_tits_video: String = "res://Animations-BattleAnimations-Goblins/GoblinBoobsGrab.ogv"
 
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
@@ -128,21 +128,7 @@ func _on_attack_selected(index: int) -> void:
 	# Видео (если есть)
 	if attack.has("video") and attack["video"] and attack_video:
 		print("DEBUG: Playing video ", attack["video"])
-	if attack. has("video") and attack["video"] and attack_video:
-		print("DEBUG:  Attempting to load video: ", attack["video"])
-		var loaded_stream = ResourceLoader.load(attack["video"])
-		print("DEBUG:  Loaded stream: ", loaded_stream)
-		print("DEBUG: Is VideoStream?:  ", loaded_stream is VideoStream)
-	
-	if loaded_stream: 
-		attack_video.stream = loaded_stream
-		attack_video.visible = true
-		attack_video.z_index = 20
-		attack_video.play()
-		call_deferred("_wait_for_video_finish")
-		return
-	else:
-		print("ERROR: Failed to load video!")
+		attack_video.stream = ResourceLoader.load(attack["video"])  # ← ЭТО РАБОТАЕТ ВСЕГДА
 		attack_video.visible = true
 		attack_video.z_index = 20
 		attack_video.play()
