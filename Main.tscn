@@ -75,6 +75,7 @@ theme_override_colors/selection_color = Color(0.633757, 0.633757, 0.633757, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0.60933, 0.60933, 0.60933, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_ed3gc")
+bbcode_enabled = true
 
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0

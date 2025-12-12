@@ -9,13 +9,18 @@ extends Node
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
 @onready var event_label: RichTextLabel = root.get_node_or_null(event_label_rel_path)
+@onready var hp_bar: RichTextLabel = left_panel.get_node_or_null("HPBar")  # HPBar!
 @onready var goblin_texture: TextureRect = root.get_node_or_null(goblin_texture_name)
 @onready var living_beings: Node = root.get_node_or_null(living_beings_name)
 @onready var attack_list: ItemList = left_panel.get_node_or_null("AttackList")
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var in_combat: bool = false
-var player_hp: int = 0
+
+# ГЛОБАЛЬНОЕ HP (НЕ СБРАСЫВАЕТСЯ!)
+const MAX_PLAYER_HP: int = 30  # ← Изменено на 30!
+var player_hp: int = MAX_PLAYER_HP
+
 var npc_hp: int = 0
 var npc_name: String = ""
 var player_attacks: Array = []
@@ -29,6 +34,7 @@ func _ready() -> void:
 	_connect_attack_signals()
 	_sync_overlay_to_road()
 	_hide_attack_ui()
+	_update_hp_bar()  # ← Показываем HP в начале
 
 func _connect_attack_signals() -> void:
 	if attack_list:
@@ -50,7 +56,7 @@ func start_combat(npc_type: String) -> void:
 	]
 	npc_attacks = tpl.get("attacks", default_attacks).duplicate()
 	
-	player_hp = 20
+	# НЕ СБРАСЫВАЕМ player_hp!
 	player_attacks = [
 		{"name": "удар с вертушки", "min": 1, "max": 5},
 		{"name": "удар кулаком", "min": 2, "max": 3}
@@ -64,6 +70,7 @@ func start_combat(npc_type: String) -> void:
 	_reparent_attack_ui(true)
 	_populate_attack_list()
 	_show_attack_ui()
+	_update_hp_bar()  # ← Обновляем в начале боя
 	_append_log("На тропе нападает %s!" % npc_name)
 
 func _set_random_goblin_texture(tpl: Dictionary) -> void:
@@ -100,6 +107,9 @@ func _on_attack_selected(index: int) -> void:
 	var dmg = rng.randi_range(attack["min"], attack["max"])
 	npc_hp -= dmg
 	_append_log("Я попытался сделать %s и нанёс %d урона" % [attack["name"], dmg])
+	
+	_update_hp_bar()  # ← Обновляем после атаки!
+	
 	if npc_hp <= 0:
 		_append_log("%s повержена!" % npc_name)
 		_end_combat()
@@ -113,6 +123,9 @@ func _npc_turn() -> void:
 	var dmg = rng.randi_range(atk["min"], atk["max"])
 	player_hp -= dmg
 	_append_log("%s пытается %s и наносит мне %d урона" % [npc_name, atk["name"], dmg])
+	
+	_update_hp_bar()  # ← Обновляем после урона!
+	
 	if player_hp <= 0:
 		_append_log("Ты пал в бою...")
 		get_tree().quit()
@@ -123,6 +136,7 @@ func _end_combat() -> void:
 		goblin_texture.visible = false
 	_reparent_attack_ui(false)
 	_hide_attack_ui()
+	_update_hp_bar()  # ← Обновляем после боя
 	_append_log("Бой окончен.")
 
 func _reparent_attack_ui(to_overlay: bool) -> void:
@@ -130,13 +144,8 @@ func _reparent_attack_ui(to_overlay: bool) -> void:
 		if attack_list:
 			_attack_list_orig_parent = attack_list.get_parent()
 			_attack_list_orig_pos = attack_list.position
-			
 			attack_list.reparent(goblin_texture)
-			
-			# ПРИВЯЗЫВАЕМ К НИЖНЕМУ КРАЮ + отступ 20 пикселей
-			var bottom_padding: int = 20
-			var list_height: int = attack_list.size.y
-			attack_list.position = Vector2(16, goblin_texture.size.y - list_height - bottom_padding)
+			attack_list.position = Vector2(16, goblin_texture.size.y - 220)
 	else:
 		if attack_list and _attack_list_orig_parent:
 			attack_list.reparent(_attack_list_orig_parent)
@@ -155,6 +164,13 @@ func _populate_attack_list() -> void:
 	attack_list.clear()
 	for a in player_attacks:
 		attack_list.add_item(a["name"])
+
+# ФУНКЦИЯ ДЛЯ HPBar — КРАСНЫЙ ТЕКСТ ПО ЦЕНТРУ
+func _update_hp_bar() -> void:
+	if not hp_bar:
+		return
+	var hp_text = "[center][color=#ff0000]%d/%d[/color][/center]" % [player_hp, MAX_PLAYER_HP]
+	hp_bar.text = hp_text
 
 func _append_log(text: String) -> void:
 	if not event_label:
