@@ -64,8 +64,8 @@ clip_contents = false
 layout_mode = 0
 offset_left = 16.0
 offset_top = 208.0
-offset_right = 80.0
-offset_bottom = 232.0
+offset_right = 88.0
+offset_bottom = 240.0
 theme_override_colors/table_border = Color(0.868985, 0.868985, 0.868985, 1)
 theme_override_colors/table_even_row_bg = Color(0.775063, 0.775063, 0.775063, 1)
 theme_override_colors/table_odd_row_bg = Color(0.687215, 0.687215, 0.687215, 1)
@@ -75,7 +75,6 @@ theme_override_colors/selection_color = Color(0.633757, 0.633757, 0.633757, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0.60933, 0.60933, 0.60933, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_ed3gc")
-text = "45/50"
 
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0
