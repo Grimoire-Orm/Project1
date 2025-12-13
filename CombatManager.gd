@@ -18,6 +18,7 @@ extends Node
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var in_combat: bool = false
+var input_blocker: ColorRect = null
 
 # ГЛОБАЛЬНОЕ HP
 const MAX_PLAYER_HP: int = 30
@@ -40,6 +41,31 @@ func _ready() -> void:
 	_hide_attack_ui()
 
 	_update_hp_bar()  # ← Начальное HP
+
+func block_input_during_video():
+	if input_blocker != null:
+		return  # уже есть, не дублируем
+	
+	input_blocker = ColorRect.new()
+	input_blocker.color = Color(0, 0, 0, 0.5)  # полупрозрачный чёрный (можно 0.0 для полной невидимости)
+	input_blocker.mouse_filter = Control.MOUSE_FILTER_STOP  # блокирует все клики
+	input_blocker.anchor_left = 0
+	input_blocker.anchor_right = 1
+	input_blocker.anchor_top = 0
+	input_blocker.anchor_bottom = 1
+	
+	# Добавляем ПОВЕРХ всего (важно! выше AttackVideo и AttackList)
+	get_tree().root.add_child(input_blocker)
+	# Или если хочешь в Main: get_parent().add_child(input_blocker)
+	# Но get_tree().root гарантирует самый верх
+	
+	# Подписываемся на окончание видео
+	attack_video.finished.connect(_on_video_finished, CONNECT_ONE_SHOT)
+
+func _on_video_finished():
+	if input_blocker != null:
+		input_blocker.queue_free()
+		input_blocker = null
 
 func _connect_attack_signals() -> void:
 	if attack_list:
@@ -131,6 +157,7 @@ func _on_attack_selected(index: int) -> void:
 		attack_video.stream = ResourceLoader.load(attack["video"])  # ← ЭТО РАБОТАЕТ ВСЕГДА
 		attack_video.visible = true
 		attack_video.z_index = 20
+		block_input_during_video()
 		attack_video.play()
 		
 		# ФИКС: Await не блокирует UI — используем call_deferred
