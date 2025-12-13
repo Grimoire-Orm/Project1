@@ -46,7 +46,7 @@ offset_left = 24.0
 offset_top = 24.0
 offset_right = 400.0
 offset_bottom = 184.0
-autowrap_mode = 1
+autowrap_mode = 2
 
 [node name="btn_move_forward" type="Button" parent="LeftPanel"]
 layout_mode = 0
@@ -73,6 +73,15 @@ offset_right = 104.0
 offset_bottom = 232.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_ed3gc")
 bbcode_enabled = true
+
+[node name="btn_open_inventory" type="Button" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 248.0
+offset_right = 426.0
+offset_bottom = 279.0
+scale = Vector2(0.816291, 0.776007)
+text = "Инвентарь"
 
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0
