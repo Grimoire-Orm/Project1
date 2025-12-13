@@ -5,7 +5,8 @@ extends Node
 @export var goblin_texture_name: String = "GoblinTexture"
 @export var living_beings_name: String = "LivingBeings"
 @export var goblins_folder: String = "res://goblins"
-@export var grab_tits_video: String = "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"
+
+@export_dir var animations_root_path: String = "res://Animations/"
 
 @onready var root: Node = get_tree().current_scene
 @onready var left_panel: Control = root.get_node_or_null(left_panel_name)
@@ -90,7 +91,7 @@ func start_combat(npc_type: String) -> void:
 	player_attacks = [
 		{"name": "удар с вертушки", "min": 1, "max": 5},
 		{"name": "удар кулаком", "min": 2, "max": 3},
-		{"name": "Схватить за сиськи", "heal": 5, "video": grab_tits_video}
+		{"name": "Схватить за сиськи", "heal": 5, "video": "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"}
 	]
 	
 	_sync_overlay_to_road()
@@ -154,7 +155,8 @@ func _on_attack_selected(index: int) -> void:
 	# Видео (если есть)
 	if attack.has("video") and attack["video"] and attack_video:
 		print("DEBUG: Playing video ", attack["video"])
-		attack_video.stream = ResourceLoader.load(attack["video"])  # ← ЭТО РАБОТАЕТ ВСЕГДА
+		var video_path = "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"
+		attack_video.stream = load(video_path)  # ← ЭТО РАБОТАЕТ ВСЕГДА
 		attack_video.visible = true
 		attack_video.z_index = 20
 		block_input_during_video()
