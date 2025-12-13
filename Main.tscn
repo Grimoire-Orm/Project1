@@ -97,6 +97,7 @@ script = ExtResource("4_e2v5r")
 
 [node name="AttackVideo" type="VideoStreamPlayer" parent="."]
 layout_mode = 0
-offset_right = 786.0
+offset_left = 424.0
+offset_right = 1210.0
 offset_bottom = 786.0
 mouse_filter = 2
