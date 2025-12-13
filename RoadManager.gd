@@ -11,8 +11,12 @@ extends Control
 @onready var nothing_events: Node = $NothingEvents
 @onready var combat_manager: Node = $CombatManager
 
+const SAFE_STEPS: int = 10  # Первые N шагов без боёв (меняй здесь!)
+
 var road_textures: Array[Texture2D] = []
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var steps_taken: int = 0
+
 
 func _ready() -> void:
 	rng.randomize()
@@ -21,7 +25,6 @@ func _ready() -> void:
 	_enter_new_room()
 	btn_move_forward.pressed.connect(_on_move_forward)
 	_update_hp_bar()  # ← Начальное HP
-
 
 func _load_road_textures() -> void:
 	road_textures.clear()
@@ -44,6 +47,7 @@ func _on_move_forward() -> void:
 	_enter_new_room()
 
 func _enter_new_room() -> void:
+	steps_taken += 1
 	event_label.text = ""
 	
 	if road_textures.is_empty():
@@ -51,7 +55,7 @@ func _enter_new_room() -> void:
 	else:
 		road_texture_rect.texture = road_textures[rng.randi_range(0, road_textures.size() - 1)]
 	
-	if rng.randi_range(1, 100) <= 15:
+	if rng.randi_range(1, 100) <= 15 and steps_taken > SAFE_STEPS:
 		combat_manager.start_combat("goblin")
 	else:
 		event_label.text = nothing_events.get_random_phrase()
