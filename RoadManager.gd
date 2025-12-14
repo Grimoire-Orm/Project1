@@ -79,3 +79,11 @@ func _append_log(text: String) -> void:
 		event_label.text += "\n" + text
 	if event_label is RichTextLabel:
 		event_label.scroll_to_line(event_label.get_line_count() - 1)
+
+#окно\фулскрин
+func _input(event):
+	if event.is_action_pressed("toggle_fullscreen"):
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
