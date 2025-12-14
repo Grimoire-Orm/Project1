@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c1no1y3gww3xb"
-path="res://.godot/imported/Pixel_art_Early_morning_dawn_s (4).jpeg-df56302321b6e8fe3b0ad836ef6ad224.ctex"
+uid="uid://cxyybsdnnfo1x"
+path="res://.godot/imported/Pixel_art_Early_morning_dawn_s (1).jpeg-3cd051f8d280f33c49af706ec0944cd4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://roads/Pixel_art_Early_morning_dawn_s (4).jpeg"
-dest_files=["res://.godot/imported/Pixel_art_Early_morning_dawn_s (4).jpeg-df56302321b6e8fe3b0ad836ef6ad224.ctex"]
+source_file="res://roads/Forest/Pixel_art_Early_morning_dawn_s (1).jpeg"
+dest_files=["res://.godot/imported/Pixel_art_Early_morning_dawn_s (1).jpeg-3cd051f8d280f33c49af706ec0944cd4.ctex"]
 
 [params]
 

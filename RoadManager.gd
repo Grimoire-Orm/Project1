@@ -1,6 +1,5 @@
 extends Control
 
-@export var roads_folder: String = "res://roads"
 @export var image_size: Vector2 = Vector2(786, 786)
 @export var image_center: Vector2 = Vector2(816, 393)
 
@@ -10,29 +9,23 @@ extends Control
 @onready var btn_move_forward: Button = $LeftPanel/btn_move_forward
 @onready var nothing_events: Node = $NothingEvents
 @onready var combat_manager: Node = $CombatManager
+@onready var biome_manager: Node = $BiomeManager
 
 const SAFE_STEPS: int = 10  # Первые N шагов без боёв (меняй здесь!)
 
-var road_textures: Array[Texture2D] = []
+
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var steps_taken: int = 0
-
+# Массив текстур теперь будет перезаписываться BiomeManager'ом
+var road_textures: Array[Texture2D] = []
 
 func _ready() -> void:
 	rng.randomize()
-	_load_road_textures()
 	_setup_texture_rect()
 	_enter_new_room()
 	btn_move_forward.pressed.connect(_on_move_forward)
 	_update_hp_bar()  # ← Начальное HP
 
-func _load_road_textures() -> void:
-	road_textures.clear()
-	for file in DirAccess.get_files_at(roads_folder):
-		if file.get_extension().to_lower() in ["png", "jpg", "jpeg", "webp"]:
-			var tex = load(roads_folder.path_join(file)) as Texture2D
-			if tex:
-				road_textures.append(tex)
 
 func _setup_texture_rect() -> void:
 	road_texture_rect.size = image_size
@@ -40,11 +33,29 @@ func _setup_texture_rect() -> void:
 	road_texture_rect.position = top_left
 	road_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
-func _on_move_forward() -> void:
-	if combat_manager.in_combat:
-		_append_log("Ты не можешь сбежать из боя, как трус!")
-		return
-	_enter_new_room()
+func _on_move_forward():  # ←←← Обратите внимание: функция с подчёркиванием!
+	steps_taken += 1
+	
+	# Загружаем случайную картинку из текущего биома
+	if road_textures.is_empty():
+		road_texture_rect.texture = null
+		event_label.text = "Кругом тьма... Ты потерялся."
+	else:
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		var random_index = rng.randi_range(0, road_textures.size() - 1)
+		road_texture_rect.texture = road_textures[random_index]
+		
+		# Шанс боя (только после safe steps)
+		if rng.randi_range(1, 100) <= 15 and steps_taken > SAFE_STEPS:
+			combat_manager.start_combat("goblin")
+			return  # Бой начался — дальше ничего не делаем
+		
+		# Обычное событие
+		event_label.text = nothing_events.get_random_phrase()
+	
+	# Попытка смены биома после шага
+	biome_manager.try_transition()
 
 func _enter_new_room() -> void:
 	steps_taken += 1

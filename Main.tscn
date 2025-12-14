@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bqhd40ioc80w0"]
+[gd_scene load_steps=9 format=3 uid="uid://bqhd40ioc80w0"]
 
 [ext_resource type="Script" path="res://RoadManager.gd" id="1_vluaq"]
 [ext_resource type="Script" path="res://NothingEvents.gd" id="2_h0qpe"]
 [ext_resource type="Script" path="res://CombatManager.gd" id="3_fgcp2"]
 [ext_resource type="Script" path="res://LivingBeings.gd" id="4_e2v5r"]
+[ext_resource type="Script" path="res://biome_manager.gd" id="5_q42dy"]
 
 [sub_resource type="Gradient" id="Gradient_8l75a"]
 offsets = PackedFloat32Array(0, 0.96, 1)
@@ -83,6 +84,15 @@ offset_bottom = 279.0
 scale = Vector2(0.816291, 0.776007)
 text = "Инвентарь"
 
+[node name="BiomeLabel" type="Label" parent="LeftPanel"]
+layout_mode = 0
+offset_left = 152.0
+offset_top = 712.0
+offset_right = 416.0
+offset_bottom = 736.0
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="RoadTexture" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 424.0
@@ -110,3 +120,6 @@ offset_left = 424.0
 offset_right = 1210.0
 offset_bottom = 786.0
 mouse_filter = 2
+
+[node name="BiomeManager" type="Node" parent="."]
+script = ExtResource("5_q42dy")
