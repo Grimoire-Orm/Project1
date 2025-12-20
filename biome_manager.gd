@@ -68,12 +68,28 @@ func try_transition():
 	biome_rng.randomize()
 	
 	# Тестовый шанс 50%
-	if biome_rng.randf() < 0.02:
+	if biome_rng.randf() < 0.5:
 		if not biome.next_biomes.is_empty():
 			var next_key = biome.next_biomes[biome_rng.randi_range(0, biome.next_biomes.size() - 1)]
 			if next_key != current_biome_key:
+				ChoiceManager.show_choices(
+				"Ты вышел на новую тропу...",
+				["Пойти дальше в " + BIOMES[next_key].display_name, "Ну его нахуй (вернуться назад)"],
+				_on_biome_choice.bind(next_key)
+				)
 				# Сообщение в лог событий
 				var event_label = get_parent().get_node("LeftPanel/EventLabel")
 				if event_label:
 					event_label.text += "\nТы вышел на новую тропу... Это " + BIOMES[next_key].display_name + "!"
 				load_biome(next_key)
+
+# НОВАЯ ФУНКЦИЯ — обработчик выбора (вставь ниже try_transition())
+func _on_biome_choice(index: int, _text: String, next_biome_key: String):
+	var event_label = get_parent().get_node("LeftPanel/EventLabel")
+	if index == 0:  # Первый вариант — "Пойти дальше"
+		if event_label:
+			event_label.text += "\nТы решился и пошёл дальше в " + BIOMES[next_biome_key].display_name + "!"
+		load_biome(next_biome_key)
+	else:  # Второй вариант — "Ну его нахуй"
+		if event_label:
+			event_label.text += "\nТы передумал и остался в " + BIOMES[current_biome_key].display_name + "..."

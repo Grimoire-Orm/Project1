@@ -123,12 +123,3 @@ mouse_filter = 2
 
 [node name="BiomeManager" type="Node" parent="."]
 script = ExtResource("5_q42dy")
-
-[node name="ChoiceMenu" type="VBoxContainer" parent="."]
-modulate = Color(0, 0, 0, 0.278431)
-z_index = 25
-layout_mode = 0
-offset_left = 576.0
-offset_top = 600.0
-offset_right = 1056.0
-offset_bottom = 704.0

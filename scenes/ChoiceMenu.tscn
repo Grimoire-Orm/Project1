@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://13jp2pcq3itq"]
+
+[node name="ChoiceMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundPanel" type="Panel" parent="."]
+z_index = 31
+offset_left = 512.0
+offset_top = 592.0
+offset_right = 590.0
+offset_bottom = 706.0
+scale = Vector2(7.36421, 1.40023)
+
+[node name="OptionsContainer" type="VBoxContainer" parent="BackgroundPanel"]
+layout_mode = 0
+offset_right = 78.0
+offset_bottom = 114.0
+
+[node name="TitleLabel" type="Label" parent="BackgroundPanel/OptionsContainer"]
+layout_mode = 2
+text = "беб"
+horizontal_alignment = 1
