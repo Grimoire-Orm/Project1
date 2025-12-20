@@ -4,7 +4,7 @@ extends Node
 const BIOMES = {
 	"Forest": {
 		"path": "res://roads/Forest/",
-		"display_name": "Лес",
+		"display_name": "Лесная тропа",
 		"transition_chance": 0.05,
 		"next_biomes": ["ConiferForest"]
 	},

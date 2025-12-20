@@ -91,7 +91,7 @@ func start_combat(npc_type: String) -> void:
 	player_attacks = [
 		{"name": "удар с вертушки", "min": 1, "max": 5},
 		{"name": "удар кулаком", "min": 2, "max": 3},
-		{"name": "Схватить за сиськи", "heal": 5, "video": "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"}
+		{"name": "Схватить за сиськи", "heal": 10, "video": "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"}
 	]
 	
 	_sync_overlay_to_road()
