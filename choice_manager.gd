@@ -14,6 +14,8 @@ func show_choices(title: String, options: Array[String], callback: Callable):
 	current_instance = choice_menu_scene.instantiate()
 	get_tree().current_scene.add_child(current_instance)
 	
+	print("Menu added to scene: ", current_instance.get_path())
+	print("Menu position: ", current_instance.position)
 	# Настраиваем
 	var title_label = current_instance.get_node("BackgroundPanel/OptionsContainer/TitleLabel")
 	title_label.text = title
@@ -48,6 +50,8 @@ func show_choices(title: String, options: Array[String], callback: Callable):
 	
 	# Z-index выше всего
 	current_instance.z_index = 30
+	current_instance.visible = true  # ← ГАРАНТИРУЕТ видимость
+	print("Menu instance visible: ", current_instance.visible)  # Для теста, удали потом
 	
 	# Подключаем коллбэк
 	# Отключаем все предыдущие подключения к choice_made (на всякий случай)

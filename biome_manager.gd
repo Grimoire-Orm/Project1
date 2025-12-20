@@ -11,7 +11,7 @@ const BIOMES = {
 	"ConiferForest": {
 		"path": "res://roads/ConiferForest/",
 		"display_name": "Хвойный лес",
-		"transition_chance": 0.05,
+		"transition_chance": 0.9,
 		"next_biomes": ["Forest"]
 	}
 }
