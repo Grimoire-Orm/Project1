@@ -10,9 +10,9 @@ extends Control
 @onready var nothing_events: Node = $NothingEvents
 @onready var combat_manager: Node = $CombatManager
 @onready var biome_manager: Node = $BiomeManager
+@onready var choice_menu: ScrollContainer = $ChoiceMenu  # ← Новый ChoiceMenu как ScrollContainer
 
 const SAFE_STEPS: int = 10  # Первые N шагов без боёв (меняй здесь!)
-
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var steps_taken: int = 0
@@ -26,7 +26,6 @@ func _ready() -> void:
 	btn_move_forward.pressed.connect(_on_move_forward)
 	_update_hp_bar()  # ← Начальное HP
 
-
 func _setup_texture_rect() -> void:
 	road_texture_rect.size = image_size
 	var top_left = image_center - image_size * 0.5
@@ -34,12 +33,23 @@ func _setup_texture_rect() -> void:
 	road_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
 func _on_move_forward():  # ←←← Обратите внимание: функция с подчёркиванием!
-	# НОВОЕ: Проверка на бой — нельзя свалить как трус!
+	# Проверка на бой — нельзя свалить как трус!
 	if combat_manager.in_combat:
 		event_label.text = "Я не могу убежать посреди битвы как трус"
 		return  # Всё! Не шагаем дальше.
 	
 	steps_taken += 1
+	
+	# ТЕСТОВЫЙ ЭВЕНТ: После ровно 3 шагов — выбор
+	if steps_taken == 3:
+		choice_menu.show_choices(
+			["Пойти дальше", "Нахуй это приключение"],  # Тексты выборов
+			[  # Действия
+				func(): _continue_forward(),  # Закрыть и остаться
+				func(): get_tree().quit()  # Закрыть игру
+			]
+		)
+		return  # Не продолжаем шаг, пока выбор не сделан
 	
 	# Загружаем случайную картинку из текущего биома
 	if road_textures.is_empty():
@@ -61,6 +71,10 @@ func _on_move_forward():  # ←←← Обратите внимание: фун�
 	
 	# Попытка смены биома после шага
 	biome_manager.try_transition()
+
+# Новая функция для "Пойти дальше" — текст и остаемся на месте
+func _continue_forward() -> void:
+	event_label.text = "Ты решаешь пойти дальше... но пока стоишь на месте."
 
 func _enter_new_room() -> void:
 	steps_taken += 1
