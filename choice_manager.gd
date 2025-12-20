@@ -54,6 +54,11 @@ func show_choices(title: String, options: Array[String], callback: Callable):
 	if choice_made.get_connections().size() > 0:
 		for conn in choice_made.get_connections():
 			choice_made.disconnect(conn.callable)
+	
+	# Гарантируем видимость и центр
+	current_instance.visible = true
+	current_instance.position = get_tree().get_root().size / 2
+	current_instance.pivot_offset = current_instance.size / 2
 
 # Теперь безопасно подключаем новый
 	if callback.is_valid():

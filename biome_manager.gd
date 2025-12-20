@@ -63,20 +63,29 @@ func update_biome_label():
 		biome_label.text = " " + BIOMES[current_biome_key].display_name
 
 func try_transition():
+	print("Trying transition...")  # Уже есть, работает
 	var biome = BIOMES[current_biome_key]
 	var biome_rng = RandomNumberGenerator.new()
 	biome_rng.randomize()
 	
-	if biome_rng.randf() < 0.5:
+	var roll = biome_rng.randf()  # Добавь это
+	print("RNG roll: ", roll)  # Добавь это — смотри значение в консоли (0.0-1.0)
+	
+	if roll < 1.0:  # Для теста сделай if roll < 1.0 чтобы всегда срабатывало
+		print("Triggering choice menu!")  # Добавь это — если появляется, то if сработал
 		if not biome.next_biomes.is_empty():
 			var next_key = biome.next_biomes[biome_rng.randi_range(0, biome.next_biomes.size() - 1)]
 			if next_key != current_biome_key:
+				print("Showing menu for next_key: ", next_key)  # Добавь это
 				ChoiceManager.show_choices(
 					"Ты вышел на новую тропу...",
 					["Пойти дальше в " + BIOMES[next_key].display_name, "Ну его нахуй (вернуться назад)"],
 					_on_biome_choice.bind(next_key)
 				)
-				return  # Прерываем, чтобы не было мгновенного перехода
+				return
+	print("No transition this step.")  # Добавь это — если появляется, if не сработал
+
+
 
 func _on_biome_choice(index: int, _text: String, next_biome_key: String):
 	var event_label = get_parent().get_node("LeftPanel/EventLabel")
