@@ -89,7 +89,7 @@ func start_combat(npc_type: String) -> void:
 	npc_attacks = tpl.get("attacks", default_attacks).duplicate()
 	
 	player_attacks = [
-		{"name": "удар с вертушки", "min": 1, "max": 5},
+		{"name": "удар с вертушки", "min": 30, "max": 31},
 		{"name": "удар кулаком", "min": 2, "max": 3},
 		{"name": "Схватить за сиськи", "heal": 10, "video": "res://Animations/BattleAnimations/Goblins/GoblinBoobsGrab.ogv"}
 	]

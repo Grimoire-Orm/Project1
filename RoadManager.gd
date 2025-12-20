@@ -34,6 +34,11 @@ func _setup_texture_rect() -> void:
 	road_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 
 func _on_move_forward():  # ←←← Обратите внимание: функция с подчёркиванием!
+	# НОВОЕ: Проверка на бой — нельзя свалить как трус!
+	if combat_manager.in_combat:
+		event_label.text = "Я не могу убежать посреди битвы как трус"
+		return  # Всё! Не шагаем дальше.
+	
 	steps_taken += 1
 	
 	# Загружаем случайную картинку из текущего биома
