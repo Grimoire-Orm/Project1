@@ -11,7 +11,7 @@ const BIOMES = {
 	"ConiferForest": {
 		"path": "res://roads/ConiferForest/",
 		"display_name": "Хвойный лес",
-		"transition_chance": 0.9,
+		"transition_chance": 0.05,
 		"next_biomes": ["Forest"]
 	}
 }
@@ -63,36 +63,17 @@ func update_biome_label():
 		biome_label.text = " " + BIOMES[current_biome_key].display_name
 
 func try_transition():
-	print("Trying transition...")  # Уже есть, работает
 	var biome = BIOMES[current_biome_key]
 	var biome_rng = RandomNumberGenerator.new()
 	biome_rng.randomize()
 	
-	var roll = biome_rng.randf()  # Добавь это
-	print("RNG roll: ", roll)  # Добавь это — смотри значение в консоли (0.0-1.0)
-	
-	if roll < 1.0:  # Для теста сделай if roll < 1.0 чтобы всегда срабатывало
-		print("Triggering choice menu!")  # Добавь это — если появляется, то if сработал
+	# Тестовый шанс 50%
+	if biome_rng.randf() < 0.02:
 		if not biome.next_biomes.is_empty():
 			var next_key = biome.next_biomes[biome_rng.randi_range(0, biome.next_biomes.size() - 1)]
 			if next_key != current_biome_key:
-				print("Showing menu for next_key: ", next_key)  # Добавь это
-				ChoiceManager.show_choices(
-					"Ты вышел на новую тропу...",
-					["Пойти дальше в " + BIOMES[next_key].display_name, "Ну его нахуй (вернуться назад)"],
-					_on_biome_choice.bind(next_key)
-				)
-				return
-	print("No transition this step.")  # Добавь это — если появляется, if не сработал
-
-
-
-func _on_biome_choice(index: int, _text: String, next_biome_key: String):
-	var event_label = get_parent().get_node("LeftPanel/EventLabel")
-	if index == 0:
-		if event_label:
-			event_label.text += "\nТы пошёл дальше в " + BIOMES[next_biome_key].display_name + "!"
-		load_biome(next_biome_key)
-	else:
-		if event_label:
-			event_label.text += "\nТы передумал и вернулся в " + BIOMES[current_biome_key].display_name + "..."
+				# Сообщение в лог событий
+				var event_label = get_parent().get_node("LeftPanel/EventLabel")
+				if event_label:
+					event_label.text += "\nТы вышел на новую тропу... Это " + BIOMES[next_key].display_name + "!"
+				load_biome(next_key)
