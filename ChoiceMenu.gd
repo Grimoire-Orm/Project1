@@ -4,7 +4,7 @@ extends ScrollContainer
 
 func _ready() -> void:
 	# Авто-фикс warning: устанавливаем min size для child
-	vbox.custom_minimum_size = Vector2(0, 300)  # Подгони, если нужно больше/меньше
+	vbox.custom_minimum_size = Vector2(0, 0)  # Подгони, если нужно больше/меньше
 
 func show_choices(choices: Array, actions: Array) -> void:  # ← Убрали типы [String] и [Callable]
 	visible = true
