@@ -50,7 +50,14 @@ func show_choices(title: String, options: Array[String], callback: Callable):
 	current_instance.z_index = 30
 	
 	# Подключаем коллбэк
-	choice_made.connect(callback, CONNECT_ONE_SHOT)
+	# Отключаем все предыдущие подключения к choice_made (на всякий случай)
+	if choice_made.get_connections().size() > 0:
+		for conn in choice_made.get_connections():
+			choice_made.disconnect(conn.callable)
+
+# Теперь безопасно подключаем новый
+	if callback.is_valid():
+		choice_made.connect(callback, CONNECT_ONE_SHOT)
 
 func _on_option_pressed(index: int, text: String):
 	if current_instance:
