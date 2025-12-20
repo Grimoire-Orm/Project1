@@ -16,6 +16,7 @@ func show_choices(choices: Array, actions: Array) -> void:  # ← Убрали �
 	for i in range(choices.size()):
 		var button = Button.new()
 		button.text = choices[i]
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD  # ← Для мультилайн (2-3 строки)
 		button.pressed.connect(func():
 			actions[i].call()  # Вызываем действие
 			visible = false  # Скрываем меню после выбора

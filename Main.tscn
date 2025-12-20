@@ -126,6 +126,7 @@ mouse_filter = 2
 script = ExtResource("5_q42dy")
 
 [node name="ChoiceMenu" type="ScrollContainer" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 480.0
 offset_top = 640.0
