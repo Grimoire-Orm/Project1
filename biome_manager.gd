@@ -72,24 +72,23 @@ func try_transition():
 		if not biome.next_biomes.is_empty():
 			var next_key = biome.next_biomes[biome_rng.randi_range(0, biome.next_biomes.size() - 1)]
 			if next_key != current_biome_key:
+				# ВЫЗЫВАЕМ МЕНЮ ВЫБОРА — ЭТО ГЛАВНОЕ!
 				ChoiceManager.show_choices(
-				"Ты вышел на новую тропу...",
-				["Пойти дальше в " + BIOMES[next_key].display_name, "Ну его нахуй (вернуться назад)"],
-				_on_biome_choice.bind(next_key)
+					"Ты вышел на новую тропу...",
+					["Пойти дальше в " + BIOMES[next_key].display_name, "Ну его нахуй (вернуться назад)"],
+					_on_biome_choice.bind(next_key)
 				)
-				# Сообщение в лог событий
-				var event_label = get_parent().get_node("LeftPanel/EventLabel")
-				if event_label:
-					event_label.text += "\nТы вышел на новую тропу... Это " + BIOMES[next_key].display_name + "!"
-				load_biome(next_key)
+				# Больше ничего не делаем — ждём выбора игрока
+				return  # ← ВАЖНО: прерываем функцию, чтобы не было мгновенного перехода
+	# Если шанс не сработал — ничего не делаем (обычный шаг)
 
-# НОВАЯ ФУНКЦИЯ — обработчик выбора (вставь ниже try_transition())
 func _on_biome_choice(index: int, _text: String, next_biome_key: String):
 	var event_label = get_parent().get_node("LeftPanel/EventLabel")
-	if index == 0:  # Первый вариант — "Пойти дальше"
+	if index == 0:  # Пойти дальше
 		if event_label:
 			event_label.text += "\nТы решился и пошёл дальше в " + BIOMES[next_biome_key].display_name + "!"
 		load_biome(next_biome_key)
-	else:  # Второй вариант — "Ну его нахуй"
+	else:  # Вернуться назад
 		if event_label:
-			event_label.text += "\nТы передумал и остался в " + BIOMES[current_biome_key].display_name + "..."
+			event_label.text += "\nТы передумал и вернулся в " + BIOMES[current_biome_key].display_name + "..."
+		# Остаёмся в текущем биоме — ничего не меняем
